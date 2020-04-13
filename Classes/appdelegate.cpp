@@ -24,6 +24,7 @@
 
 #include "appdelegate.h"
 #include "gamescene.h"
+#include "menuscene.h"
 // #define USE_AUDIO_ENGINE 1
 
 #if USE_AUDIO_ENGINE
@@ -109,7 +110,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     register_all_packages();
 
     // create a scene. it's an autorelease object
-    cocos2d::Scene *scene = GameScene::createScene();
+    cocos2d::Scene *scene = MenuScene::createScene();
     // run
     director->runWithScene(scene);
 

@@ -12,7 +12,7 @@ bool GameScene::init()
     //cocos2d::EventListenerCustom *l = cocos2d::EventListenerCustom::create();
     schedule(CC_SCHEDULE_SELECTOR(GameScene::update));
     _background.addToScene(this);
-    _player.addToScene(this);
+    //_player.addToScene(this);
     //auto q = cocos2d::EventListenerTouchOneByOne::create();
     //q->onTouchBegan = [](cocos2d::Touch* touch, cocos2d::Event* event){
 //cocos2d::Director::getInstance()->getTextureCache()->removeTexture(_t);

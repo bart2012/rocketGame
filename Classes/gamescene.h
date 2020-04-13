@@ -2,7 +2,7 @@
 #define GAMESCENE_H
 #include <cocos2d.h>
 #include "background.h"
-#include "player.h"
+//#include "player.h"
 class GameScene: public cocos2d::Scene
 {
 public:
@@ -12,7 +12,7 @@ public:
 private:
     void update(float);
     Background _background;
-    Player _player;
+    //Player _player;
 };
 
 
