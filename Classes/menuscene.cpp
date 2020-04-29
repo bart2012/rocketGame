@@ -34,31 +34,95 @@ bool MenuScene::init()
     settingItem->setPosition(cocos2d::Point(100,height-100));
     coinsItem->setPosition(cocos2d::Point(width/ 2,height-100));
     storeItem->setPosition(cocos2d::Point(width-100,height-100));
-    playItem->setPosition(cocos2d::Point(width/ 2,615));
+    playItem->setPosition(cocos2d::Point(width/2,615));
     customizeItem->setPosition(cocos2d::Point(width/ 2,320));
 
-    auto *menu = cocos2d::Menu::create(settingItem,coinsItem,storeItem,playItem,customizeItem,NULL);
+    menu = cocos2d::Menu::create(settingItem,coinsItem,storeItem,playItem,customizeItem,NULL);
     menu->setPosition(cocos2d::Point(0,0));
     this->addChild(menu);
+
     return true;
 }
 
 void MenuScene::menuSettingClicked(cocos2d::Ref * ){
  CCLOG("Settings");
+  short width=1080;short height=1920;
+ _settingsMenu = cocos2d::Node::create();
+ auto backgroundSprite = cocos2d::Sprite::create("setting/settings_bg.png");
+ auto backButton=cocos2d::ui::Button::create("setting/back.png","setting/back.png");
+ backButton->addTouchEventListener( CC_CALLBACK_1(MenuScene::backButtonClicked,this));
+ auto musicCheckbox = cocos2d::ui::CheckBox::create( "setting/music off.png","setting/music active.png");
+ musicCheckbox->setSelected(true);
+ musicCheckbox->addEventListener(musicCheckboxClicked);
+ auto soundCheckbox = cocos2d::ui::CheckBox::create("setting/sound off.png","setting/sound active.png");
+ soundCheckbox->setSelected(true);
+ soundCheckbox->addEventListener(soundCheckboxCliced);
+
+ backgroundSprite->setPosition(cocos2d::Point(width/2,height));
+ backButton->setPosition(cocos2d::Point(width/2-backgroundSprite->getBoundingBox().size.width/3
+                                        ,height+backgroundSprite->getBoundingBox().size.height/3));
+ musicCheckbox->setPosition(cocos2d::Point(width/2+backgroundSprite->getBoundingBox().size.width/4
+                                           ,height-backgroundSprite->getBoundingBox().size.height/8));
+ soundCheckbox->setPosition(cocos2d::Point(width/2-backgroundSprite->getBoundingBox().size.width/4
+                                           ,height-backgroundSprite->getBoundingBox().size.height/8));
+ _settingsMenu->addChild(backgroundSprite);
+ _settingsMenu->addChild(backButton);
+ _settingsMenu->addChild(musicCheckbox);
+ _settingsMenu->addChild(soundCheckbox);
+ this->addChild(_settingsMenu);
+ auto moveTo = cocos2d::MoveTo::create(0.6,cocos2d::Point(0,-height/2));
+ _settingsMenu->runAction(moveTo);
+ menu->setEnabled(false);
+ auto listener = cocos2d::EventListenerTouchOneByOne::create();
+       listener->setSwallowTouches(true);
+       listener->onTouchBegan = [=](cocos2d::Touch* touch,cocos2d::Event* event){
+           //if(!backgroundSprite->getBoundingBox().containsPoint(this->convertToNodeSpace( touch->getLocation() )))
+             this->backButtonClicked(this);
+           return true;
+       };
+       _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 }
 void MenuScene::menuCoinsClicked(cocos2d::Ref * ){
  CCLOG("Coins");
 }
 void MenuScene::menuStoreClicked(cocos2d::Ref * ){
  CCLOG("Store");
+ 
 }
 void MenuScene::menuStartClicked(cocos2d::Ref * ){
- auto director = cocos2d::Director::getInstance();
- cocos2d::Scene *scene = GameScene::createScene();
- director->replaceScene(scene);
+cocos2d::Scene *scene = GameScene::createScene();
+cocos2d::Director::getInstance()->replaceScene(cocos2d::TransitionSlideInB::create(2, scene) );
+
 }
 void MenuScene::menuCustomizeClicked(cocos2d::Ref * ){
  CCLOG("Customize");
+}
+void MenuScene::backButtonClicked(cocos2d::Ref *){
+ CCLOG("Back");
+short height=1920;
+ auto moveTo = cocos2d::MoveTo::create(0.6,cocos2d::Point(0,height/2));
+ _settingsMenu->runAction(moveTo);
+ menu->setEnabled(true);
+}
+void MenuScene::musicCheckboxClicked(cocos2d::ui::CheckBox::Ref*, cocos2d::ui::CheckBox::EventType type ){
+    switch(type){
+        case cocos2d::ui::CheckBox::EventType::SELECTED:
+          CCLOG("MUSIC ON");
+        break;
+        case cocos2d::ui::CheckBox::EventType::UNSELECTED:
+        CCLOG("MUSIC OFF");
+      break;
+    }
+}
+void MenuScene::soundCheckboxCliced(cocos2d::ui::CheckBox::Ref* , cocos2d::ui::CheckBox::EventType type ){
+    switch(type){
+        case cocos2d::ui::CheckBox::EventType::SELECTED:
+          CCLOG("SOUND ON");
+        break;
+        case cocos2d::ui::CheckBox::EventType::UNSELECTED:
+        CCLOG("SOUND OFF");
+      break;
+    }
 }
 MenuScene::~MenuScene(){
 
