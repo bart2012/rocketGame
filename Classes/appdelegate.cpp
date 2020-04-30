@@ -33,10 +33,7 @@ using namespace cocos2d::experimental;
 
 USING_NS_CC;
 
-//static cocos2d::Size designResolutionSize = cocos2d::Size(480, 320);
-//static cocos2d::Size smallResolutionSize = cocos2d::Size(480, 320);
-//static cocos2d::Size mediumResolutionSize = cocos2d::Size(1024, 768);
-//static cocos2d::Size largeResolutionSize = cocos2d::Size(2048, 1536);
+extern const cocos2d::Vec2 sizeScene(1080,1920);
 
 AppDelegate::AppDelegate()
 {
@@ -71,16 +68,16 @@ bool AppDelegate::applicationDidFinishLaunching() {
     auto director = Director::getInstance();
     
     auto glview = director->getOpenGLView();
-    //Size frameSize = Director::getInstance()->getOpenGLView()->getFrameSize();
+
     if(!glview) {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
         glview = GLViewImpl::createWithRect("Space racer", cocos2d::Rect(0, 0, 410, 710));
-        glview->setDesignResolutionSize(1080,1920,ResolutionPolicy::SHOW_ALL);
 #else
         glview = GLViewImpl::create("game");
 #endif
         director->setOpenGLView(glview);
     }
+    glview->setDesignResolutionSize(sizeScene.x,sizeScene.y,ResolutionPolicy::SHOW_ALL);
 
     // turn on display FPS
     director->setDisplayStats(true);
