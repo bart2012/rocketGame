@@ -24,6 +24,8 @@
 
 #include "appdelegate.h"
 #include "gamescene.h"
+#include <AudioEngine.h>
+
 // #define USE_AUDIO_ENGINE 1
 
 #if USE_AUDIO_ENGINE
@@ -63,8 +65,14 @@ static int register_all_packages()
     return 0; //flag for packages manager
 }
 
-bool AppDelegate::applicationDidFinishLaunching() {
+bool AppDelegate::applicationDidFinishLaunching()
+{
     // initialize director
+    AudioEngine::preload("Sound/fon.mp3");
+    AudioEngine::preload("Sound/lose.mp3");
+    AudioEngine::preload("Sound/coin.mp3");
+    AudioEngine::preload("Sound/click.mp3");
+
     auto director = Director::getInstance();
     
     auto glview = director->getOpenGLView();
@@ -73,7 +81,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
         glview = GLViewImpl::createWithRect("Space racer", cocos2d::Rect(0, 0, 410, 710));
 #else
-        glview = GLViewImpl::create("game");
+        glview = GLViewImpl::create("Space racer");
 #endif
         director->setOpenGLView(glview);
     }

@@ -3,17 +3,17 @@
 #include <ctime>
 #include <cmath>
 #define PI 3.14159265
-Background::Background()
+Background::Background(int *complexity,int *speedMultiplier):_complexity(complexity),_speedMultiplier(speedMultiplier)
 {
+    _planet = new Planet(complexity);
+    _layer  = cocos2d::Layer::create();
     _starsTexture = cocos2d::Director::getInstance()->getTextureCache()->addImage("PNG/stars.png");
     _cometaTexture = cocos2d::Director::getInstance()->getTextureCache()->addImage("PNG/cometa.png");
     _backgroundSprite = cocos2d::Sprite::create("PNG/background.png");
     _backgroundSprite->setAnchorPoint(cocos2d::Vec2(0,0));
-    _moonSprite = cocos2d::Sprite::create("PNG/moon.png");
     // _moonSprite = cocos2d::Sprite::create();
     // _moonSprite->setTexture(_cometaTexture);
     // _moonSprite->setTextureRect(cocos2d::Rect(0,0,18,143));
-    _moonSprite->setAnchorPoint(cocos2d::Vec2(0,0));
     _starsMasSprites = new cocos2d::Sprite* [2];
     for(int i = 0;i<2;i++)
     {
@@ -24,34 +24,38 @@ Background::Background()
         _starsMasSprites[i]->setPosition(cocos2d::Vec2(0,0 + 1920*i));
     }
     _backgroundSprite->setPosition(cocos2d::Vec2(0,0));
-    _moonSprite->setPosition(cocos2d::Vec2(0,0));
     setupComets();
 }
 
-void Background::update(cocos2d::Scene *scene)
+void Background::update()
 {
     updateStars();
-    updateComets(scene);
-    //_moonSprite->runAction(cocos2d::MoveBy::create(1,cocos2d::Vec2(0,0.5)));
+    updateComets();
+}
+
+Planet *Background::planet() const
+{
+    return _planet;
 }
 
 void Background::addToScene(cocos2d::Scene *scene)
 {
-    scene->addChild(_backgroundSprite);
+    _layer->addChild(_backgroundSprite);
     for(int i=0;i<2;i++)
     {
-        scene->addChild(_starsMasSprites[i]);
+        _layer->addChild(_starsMasSprites[i]);
     }
     for(unsigned int i=0;i<_cometaVectorSprites.size();i++)
     {
-        scene->addChild(_cometaVectorSprites[i]);
+        _layer->addChild(_cometaVectorSprites[i]);
     }
-    //scene->addChild(_moonSprite);
+    scene->addChild(_layer);
+    _planet->addToScene(scene);
 }
 
-void Background::updateComets(cocos2d::Scene *scene)
+void Background::updateComets()
 {
-    removeComets(scene);
+    removeComets();
     //create new comets
     if(_iterOfNumberForCallCreateComets>=_numberForCallCreateComets)
     {
@@ -59,7 +63,7 @@ void Background::updateComets(cocos2d::Scene *scene)
         createComets();
         _numberForCallCreateComets = rand()%30+30;
         _iterOfNumberForCallCreateComets=-1;
-        scene->addChild(_cometaVectorSprites[_cometaVectorSprites.size()-1]);
+        _layer->addChild(_cometaVectorSprites[_cometaVectorSprites.size()-1]);
     }
     ++_iterOfNumberForCallCreateComets;
 }
@@ -147,7 +151,7 @@ void Background::updateStars()
 {
     for(int i=0;i<2;i++)
     {
-        _starsMasSprites[i]->runAction(cocos2d::MoveBy::create(0.1,cocos2d::Vec2(0,-5)));
+        _starsMasSprites[i]->runAction(cocos2d::MoveBy::create(0.1-0.01*(*_complexity*(*_speedMultiplier)),cocos2d::Vec2(0,-5)));
         if(_starsMasSprites[i]->getPositionY()<=-1920)
         {
             _starsMasSprites[i]->setPosition(cocos2d::Vec2(0,1920));
@@ -201,7 +205,7 @@ void Background::setupComets()
     }
 }
 
-void Background::removeComets(cocos2d::Scene *scene)
+void Background::removeComets()
 {
     cocos2d::Vec2 cometasPosition;
     for(unsigned int i=0;i<_cometaVectorSprites.size();i++)
@@ -209,7 +213,7 @@ void Background::removeComets(cocos2d::Scene *scene)
         cometasPosition = _cometaVectorSprites[i]->getPosition();
         if(cometasPosition.x>1223||cometasPosition.x<-143||cometasPosition.y>2063||cometasPosition.y<-143)
         {
-            scene->removeChild(_cometaVectorSprites[i]);
+            _layer->removeChild(_cometaVectorSprites[i]);
             _cometaVectorSprites.erase(_cometaVectorSprites.begin()+i);
             --i;
         }

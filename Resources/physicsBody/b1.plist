@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>metadata</key>
+        <dict>
+            <key>format</key>
+            <integer>1</integer>
+        </dict>
+        <key>category_names</key>
+        <array>
+        </array>
+        <key>bodies</key>
+        <dict>
+
+            <key>barrier1</key>
+            <dict>
+                <key>anchorpoint</key>
+                <string>{ 0.50200,0.49800 }</string>
+                <key>is_dynamic</key>
+                <true/>
+                <key>affected_by_gravity</key>
+                <true/>
+                <key>allows_rotation</key>
+                <true/>
+                <key>linear_damping</key>
+                <real>0</real>
+                <key>velocity_limit</key>
+                <real>1e+06</real>
+                <key>angular_damping</key>
+                <real>0</real>
+                <key>angular_velocity_limit</key>
+                <real>1e+06</real>
+                <key>fixtures</key>
+                <array>
+
+                    <dict>
+                        <key>density</key>
+                        <real>2</real>
+                        <key>restitution</key>
+                        <real>0.2</real>
+                        <key>friction</key>
+                        <real>0.7</real>
+                        <key>tag</key>
+                        <integer>0</integer>
+                        <key>group</key>
+                        <integer>0</integer>
+                        <key>category_mask</key>
+                        <integer>4294967295</integer>
+                        <key>collision_mask</key>
+                        <integer>4294967295</integer>
+                        <key>contact_test_mask</key>
+                        <integer>0</integer>
+                        <key>fixture_type</key>
+                        <string>POLYGON</string>
+                        
+                        <key>polygons</key>
+                        <array>
+                            <array>
+                                <string>{ 25.50000,-102.50000 }</string>
+                                <string>{ -57.50000,-73.50000 }</string>
+                                <string>{ -121.50000,-32.50000 }</string>
+                                <string>{ -91.50000,61.50000 }</string>
+                                <string>{ 34.50000,100.50000 }</string>
+                                <string>{ 133.50000,21.50000 }</string>
+                                <string>{ 87.50000,-71.50000 }</string>
+                                <string>{ 60.50000,-94.50000 }</string>
+                            </array>
+                            <array>
+                                <string>{ 133.50000,21.50000 }</string>
+                                <string>{ 34.50000,100.50000 }</string>
+                                <string>{ 116.50000,66.50000 }</string>
+                                <string>{ 133.50000,41.50000 }</string>
+                            </array>
+                            <array>
+                                <string>{ -130.50000,19.50000 }</string>
+                                <string>{ -91.50000,61.50000 }</string>
+                                <string>{ -121.50000,-32.50000 }</string>
+                                <string>{ -132.50000,-4.50000 }</string>
+                            </array>
+                            <array>
+                                <string>{ 34.50000,100.50000 }</string>
+                                <string>{ -91.50000,61.50000 }</string>
+                                <string>{ -15.50000,96.50000 }</string>
+                            </array>
+                        </array>
+                        
+                    </dict>
+
+                </array>
+            </dict>
+
+        </dict>
+    </dict>
+</plist>
+
+
+
+
