@@ -10,7 +10,7 @@
 #include <planet.h>
 #include "booster.h"
 #include "pausemenu.h"
-class GameScene : public cocos2d::Scene
+class GameScene: public cocos2d::Scene
 {
 public:
     static cocos2d::Scene *createScene();

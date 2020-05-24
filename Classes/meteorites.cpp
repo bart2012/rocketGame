@@ -111,5 +111,3 @@ Meteorites::~Meteorites()
 {
     delete [] _meteoriteTexture;
 }
-
-
