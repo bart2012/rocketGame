@@ -1,11 +1,12 @@
 #ifndef TOPBARBUTTONS_H
 #define TOPBARBUTTONS_H
+#include <cocos2d.h>
 
-
-class topBarButtons
+class TopBarButtons
 {
 public:
-    topBarButtons();
+    static void menuCoinsClicked(cocos2d::Ref *);
+    static void menuStoreClicked(cocos2d::Ref *);
 };
 
 #endif // TOPBARBUTTONS_H

@@ -1,5 +1,4 @@
 #include "menuscene.h"
-#include "gamescene.h"
 MenuScene::MenuScene(){
 _backgroundSprite = cocos2d::Sprite::create("startmenu/bg.png");
 _backgroundSprite->setAnchorPoint(cocos2d::Vec2(0,0));
@@ -23,9 +22,9 @@ bool MenuScene::init()
     auto settingItem=cocos2d::MenuItemImage::create("startmenu/setting.png","startmenu/setting.png"
                                                    ,CC_CALLBACK_1(MenuScene::menuSettingClicked,this));
     auto coinsItem=cocos2d::MenuItemImage::create("startmenu/coins.png","startmenu/coins.png"
-                                                   ,CC_CALLBACK_1(MenuScene::menuCoinsClicked,this));
+                                                   ,CC_CALLBACK_0(TopBarButtons::menuCoinsClicked,this));
     auto storeItem=cocos2d::MenuItemImage::create("startmenu/store.png","startmenu/store.png"
-                                                   ,CC_CALLBACK_1(MenuScene::menuStoreClicked,this));
+                                                   ,CC_CALLBACK_0(TopBarButtons::menuStoreClicked,this));
     auto playItem=cocos2d::MenuItemImage::create("startmenu/buttonstart.png","startmenu/buttonstart_clicked.png"
                                                    ,CC_CALLBACK_1(MenuScene::menuStartClicked,this));
     auto customizeItem=cocos2d::MenuItemImage::create("startmenu/buttoncustomize.png","startmenu/buttoncustomize_clicked.png"
@@ -45,12 +44,21 @@ bool MenuScene::init()
 }
 
 void MenuScene::menuSettingClicked(cocos2d::Ref * ){
- CCLOG("Settings");
-  short width=1080;short height=1920;
+ CCLOG("Settings");short width=1080;short height=1920;
+  menu->setEnabled(false);
+  auto listener = cocos2d::EventListenerTouchOneByOne::create();
+        listener->setSwallowTouches(true);
+        listener->onTouchBegan = [=](cocos2d::Touch* touch,cocos2d::Event* event){
+            //if(!backgroundSprite->getBoundingBox().containsPoint(this->convertToNodeSpace( touch->getLocation() )))
+              this->backButtonClicked(this);
+            return true;
+        };
+        _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+
  _settingsMenu = cocos2d::Node::create();
  auto backgroundSprite = cocos2d::Sprite::create("setting/settings_bg.png");
  auto backButton=cocos2d::ui::Button::create("setting/back.png","setting/back.png");
- backButton->addTouchEventListener( CC_CALLBACK_1(MenuScene::backButtonClicked,this));
+ backButton->addClickEventListener( CC_CALLBACK_1(MenuScene::backButtonClicked,this));
  auto musicCheckbox = cocos2d::ui::CheckBox::create( "setting/music off.png","setting/music active.png");
  musicCheckbox->setSelected(true);
  musicCheckbox->addEventListener(musicCheckboxClicked);
@@ -70,38 +78,28 @@ void MenuScene::menuSettingClicked(cocos2d::Ref * ){
  _settingsMenu->addChild(musicCheckbox);
  _settingsMenu->addChild(soundCheckbox);
  this->addChild(_settingsMenu);
- auto moveTo = cocos2d::MoveTo::create(0.6,cocos2d::Point(0,-height/2));
+ auto moveTo = cocos2d::MoveTo::create(0.5,cocos2d::Point(0,-height/2));
  _settingsMenu->runAction(moveTo);
- menu->setEnabled(false);
- auto listener = cocos2d::EventListenerTouchOneByOne::create();
-       listener->setSwallowTouches(true);
-       listener->onTouchBegan = [=](cocos2d::Touch* touch,cocos2d::Event* event){
-           //if(!backgroundSprite->getBoundingBox().containsPoint(this->convertToNodeSpace( touch->getLocation() )))
-             this->backButtonClicked(this);
-           return true;
-       };
-       _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+
+
 }
-void MenuScene::menuCoinsClicked(cocos2d::Ref * ){
- CCLOG("Coins");
-}
-void MenuScene::menuStoreClicked(cocos2d::Ref * ){
- CCLOG("Store");
- 
-}
+
 void MenuScene::menuStartClicked(cocos2d::Ref * ){
 cocos2d::Scene *scene = GameScene::createScene();
-cocos2d::Director::getInstance()->replaceScene(cocos2d::TransitionSlideInB::create(2, scene) );
+cocos2d::Director::getInstance()->replaceScene(cocos2d::TransitionSlideInB::create(1, scene) );
 
 }
 void MenuScene::menuCustomizeClicked(cocos2d::Ref * ){
  CCLOG("Customize");
+ cocos2d::Scene *scene = CustomizeScene::createScene();
+ cocos2d::Director::getInstance()->replaceScene(cocos2d::TransitionSlideInR::create(0.6,scene));
 }
 void MenuScene::backButtonClicked(cocos2d::Ref *){
  CCLOG("Back");
 short height=1920;
- auto moveTo = cocos2d::MoveTo::create(0.6,cocos2d::Point(0,height/2));
+ auto moveTo = cocos2d::MoveTo::create(0.3,cocos2d::Point(0,height/2));
  _settingsMenu->runAction(moveTo);
+
  menu->setEnabled(true);
 }
 void MenuScene::musicCheckboxClicked(cocos2d::ui::CheckBox::Ref*, cocos2d::ui::CheckBox::EventType type ){

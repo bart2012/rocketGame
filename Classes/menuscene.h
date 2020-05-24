@@ -2,6 +2,9 @@
 #define MENUSCENE_H
 #include <cocos2d.h>
 #include "ui/CocosGUI.h"
+#include "topbarbuttons.h"
+#include "gamescene.h"
+#include "customizescene.h"
 class MenuScene: public cocos2d::Scene
 {
 public:
@@ -11,14 +14,13 @@ public:
     static cocos2d::Scene* createScene();
     virtual bool init();
     CREATE_FUNC(MenuScene);
+
 private:
     cocos2d::Sprite *_backgroundSprite;
     cocos2d::Node *_settingsMenu;
     cocos2d::Menu *menu;
 
-    void menuSettingClicked(cocos2d::Ref *);
-    void menuCoinsClicked(cocos2d::Ref *);
-    void menuStoreClicked(cocos2d::Ref *);
+    void menuSettingClicked(cocos2d::Ref *);    
     void menuStartClicked(cocos2d::Ref *);
     void menuCustomizeClicked(cocos2d::Ref *musicCheckboxClicked);
     void backButtonClicked(cocos2d::Ref *);

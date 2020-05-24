@@ -1,6 +1,6 @@
 #ifndef DEFENDERROCKET_H
 #define DEFENDERROCKET_H
-
+#include "rocketbase.h"
 
 class DefenderRocket : public RocketBase
 {
