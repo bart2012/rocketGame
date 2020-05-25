@@ -7,8 +7,7 @@ Meteorites::Meteorites()
     _meteoriteTexture = new cocos2d::Texture2D* [2];
     _meteoriteTexture[0] = cocos2d::Director::getInstance()->getTextureCache()->addImage("PNG/barrier1.png");
     _meteoriteTexture[1] = cocos2d::Director::getInstance()->getTextureCache()->addImage("PNG/barrier2.png");
-    PhysicsShapeCache::getInstance()->addShapesWithFile("physicsBody/b1.plist");
-    PhysicsShapeCache::getInstance()->addShapesWithFile("physicsBody/b2.plist");
+
 }
 
 void Meteorites::update()

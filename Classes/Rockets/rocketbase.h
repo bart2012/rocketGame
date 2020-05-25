@@ -2,6 +2,7 @@
 #define ROCKETBASE_H
 #include "cocos2d.h"
 
+
 class RocketBase
 {
 public:
@@ -12,17 +13,23 @@ public:
         YELLOW=3
     };
 
-    RocketBase();
+    enum Type{ArchiW,Bullet,Defender};
 
+    RocketBase();
+    virtual ~RocketBase();
     RocketColor getColor()const;
     void setColor(RocketColor);
     cocos2d::Sprite* getSprite();
 
 
 
-    protected:
-    RocketColor _color = GREEN;
+    Type getType() const;
 
+    void setType(const Type &type);
+
+protected:
+    RocketColor _color = GREEN;
+    Type _type;
     cocos2d::Sprite* _mainSprite;
     cocos2d::Sprite*  _redSprite;
     cocos2d::Sprite*  _blueSprite;

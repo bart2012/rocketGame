@@ -1,8 +1,9 @@
 #include "pausemenu.h"
 #include "gamescene.h"
 #include <AudioEngine.h>
-
+#include "menuscene.h"
 extern cocos2d::Vec2 sizeScene;
+extern MenuScene *mainMenu;
 
 PauseMenu::PauseMenu(void *gameScene):_gameScene(gameScene)
 {
@@ -12,7 +13,7 @@ PauseMenu::PauseMenu(void *gameScene):_gameScene(gameScene)
     _background->setPosition(cocos2d::Vec2(sizeScene.x/2,sizeScene.y/2));
     _layer->addChild(_background);
     _continue = cocos2d::ui::Button::create("PNG/continueButton.png");
-    _continue->addTouchEventListener([&](cocos2d::Ref* sender, cocos2d::ui::Widget::TouchEventType type){        AudioEngine::play2d("click.mp3");
+    _continue->addTouchEventListener([&](cocos2d::Ref* sender, cocos2d::ui::Widget::TouchEventType type){        AudioEngine::play2d("Sound/click.mp3");
 ((GameScene*)_gameScene)->continueGame();});
     //_restart->setAnchorPoint(cocos2d::Vec2(0,0));
     _continue->setPosition(cocos2d::Vec2(sizeScene.x/2,sizeScene.y/2));
@@ -20,8 +21,9 @@ PauseMenu::PauseMenu(void *gameScene):_gameScene(gameScene)
     _mainMenu = cocos2d::ui::Button::create("endMenu/buttonMainMenu.png");
     _mainMenu->setPosition(cocos2d::Vec2(sizeScene.x/2,sizeScene.y/2-250));
     _mainMenu->addTouchEventListener([&](cocos2d::Ref* sender, cocos2d::ui::Widget::TouchEventType type){
-        AudioEngine::play2d("click.mp3");
-
+        AudioEngine::play2d("Sound/click.mp3");
+        cocos2d::Scene *scene = MenuScene::createScene();
+        cocos2d::Director::getInstance()->replaceScene(cocos2d::TransitionSlideInT::create(1,scene ));
         delete this;
         //зміна сцени
     });

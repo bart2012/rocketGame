@@ -23,7 +23,7 @@ cocos2d::Scene *GameScene::createScene()
     scene->getPhysicsWorld()->setSpeed(1);
     auto layer = GameScene::create();
     scene->addChild(layer);
-    scene->getPhysicsWorld()->setDebugDrawMask(1);
+    //scene->getPhysicsWorld()->setDebugDrawMask(1);
     return scene;
 }
 
@@ -100,7 +100,6 @@ bool GameScene::init()
     {
         return false;
     }
-    AudioEngine::play2d("fon.mp3",true);
     schedule(CC_SCHEDULE_SELECTOR(GameScene::update));
     EventListenerPhysicsContact *contactListener = EventListenerPhysicsContact::create();
     contactListener->onContactBegin = CC_CALLBACK_1(GameScene::onContactBegin, this);
@@ -138,7 +137,7 @@ bool GameScene::init()
         return true;
     };
     touchLister->setSwallowTouches(true);
-    _background = new Background(&_complexity);
+    _background = new Background(&_complexity,&_speedMultiplier);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(touchLister, this);
     //startGame();
     _background->addToScene(this);
@@ -292,7 +291,7 @@ bool GameScene::onContactBegin(PhysicsContact &contact)
             || (contact.getShapeB()->getBody()->getName() == "player"
                 && contact.getShapeA()->getBody()->getName() == "booster"))
     {
-        AudioEngine::play2d("coin.mp3");
+        AudioEngine::play2d("Sound/coin.mp3");
         std::thread movePlayerEndThread([&] {
             _booster->start();
             delete _booster;
@@ -314,14 +313,14 @@ bool GameScene::onContactBegin(PhysicsContact &contact)
     if (contact.getShapeA()->getBody()->getName() == "player"
             && contact.getShapeB()->getBody()->getName() == "coin")
     {
-        AudioEngine::play2d("coin.mp3");
+        AudioEngine::play2d("Sound/coin.mp3");
         _coin.remove(contact.getShapeB()->getBody());
         return false;
     }
     if (contact.getShapeB()->getBody()->getName() == "player"
             && contact.getShapeA()->getBody()->getName() == "coin")
     {
-        AudioEngine::play2d("coin.mp3");
+        AudioEngine::play2d("Sound/coin.mp3");
         _coin.remove(contact.getShapeA()->getBody());
         return false;
     }

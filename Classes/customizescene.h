@@ -20,7 +20,6 @@ public:
     virtual bool init();
     CREATE_FUNC(CustomizeScene);
     private:
-     RocketBase *_rocket;
      cocos2d::Sprite *_backgroundSprite;
      cocos2d::Sprite *_active;
      cocos2d::Menu *_topBarMenu;

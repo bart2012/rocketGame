@@ -5,15 +5,69 @@
 #else
 #include <unistd.h>
 #endif
+#include "menuscene.h"
+#include "Rockets/rocketbase.h"
+extern MenuScene *mainMenu;
 
 extern cocos2d::Vec2 sizeScene;
 
 Player::Player()
 {
-    _sprite = cocos2d::Sprite::create("Rockets/Bullet/Red.png");
+    if (mainMenu->_rocket->getType()==RocketBase::Type::ArchiW)
+    {
+        if(mainMenu->_rocket->getColor()==RocketBase::RocketColor::RED)
+        {
+            _sprite = cocos2d::Sprite::create("Rockets/ArchiW/Red.png");
+        }
+        if(mainMenu->_rocket->getColor()==RocketBase::RocketColor::YELLOW)
+        {
+            _sprite = cocos2d::Sprite::create("Rockets/ArchiW/Yellow.png");
+        }
+        if(mainMenu->_rocket->getColor()==RocketBase::RocketColor::GREEN)
+        {
+            _sprite = cocos2d::Sprite::create("Rockets/ArchiW/Green.png");
+        }
+        if(mainMenu->_rocket->getColor()==RocketBase::RocketColor::BLUE)
+        {
+            _sprite = cocos2d::Sprite::create("Rockets/ArchiW/Blue.png");
+        }
+    }
+    if (mainMenu->_rocket->getType()==RocketBase::Type::Bullet)
+    {
+        if(mainMenu->_rocket->getColor()==RocketBase::RocketColor::YELLOW)
+        {
+            _sprite = cocos2d::Sprite::create("Rockets/Bullet/Yellow.png");
+        }
+        if(mainMenu->_rocket->getColor()==RocketBase::RocketColor::GREEN)
+        {
+            _sprite = cocos2d::Sprite::create("Rockets/Bullet/Green.png");
+        }
+        if(mainMenu->_rocket->getColor()==RocketBase::RocketColor::BLUE)
+        {
+            _sprite = cocos2d::Sprite::create("Rockets/Bullet/Blue.png");
+        }
+    }
+    if (mainMenu->_rocket->getType()==RocketBase::Type::Defender)
+    {
+        if(mainMenu->_rocket->getColor()==RocketBase::RocketColor::RED)
+        {
+            _sprite = cocos2d::Sprite::create("Rockets/Defender/Red.png");
+        }
+        if(mainMenu->_rocket->getColor()==RocketBase::RocketColor::YELLOW)
+        {
+            _sprite = cocos2d::Sprite::create("Rockets/Defender/Yellow.png");
+        }
+        if(mainMenu->_rocket->getColor()==RocketBase::RocketColor::GREEN)
+        {
+            _sprite = cocos2d::Sprite::create("Rockets/Defender/Green.png");
+        }
+        if(mainMenu->_rocket->getColor()==RocketBase::RocketColor::BLUE)
+        {
+            _sprite = cocos2d::Sprite::create("Rockets/Defender/Blue.png");
+        }
+    }
     //_sprite->setAnchorPoint(cocos2d::Vec2(0,0));
     _sprite->setPosition(cocos2d::Vec2(540, 400));
-    PhysicsShapeCache::getInstance()->addShapesWithFile("physicsBody/rocket.plist");
     _physicsBody = PhysicsShapeCache::getInstance()->createBodyWithName("rocket");
     _physicsBody->setDynamic(true);
     _physicsBody->setMass(0);
@@ -23,7 +77,7 @@ Player::Player()
     _physicsBody->setContactTestBitmask(1);
     _physicsBody->setName(name);
     _sprite->addComponent(_physicsBody);
-    _rotateTo0Angul = cocos2d::RotateTo::create(0.24, 0);
+    _rotateTo0Angul = cocos2d::RotateTo::create(0.22, 0);
     _rotateTo0Angul->retain();
     _rotateTo0Angul->update(0.01);
 
@@ -80,7 +134,7 @@ void Player::moveEnd()
     CCLOG("stop start3");
     //auto a  = _rotateTo0Angul->clone();
     //a->retain();
-        _sprite->runAction(_rotateTo0Angul);
+    _sprite->runAction(_rotateTo0Angul);
     for (int i = 0; i < 3; i++)
     {
         usleep(100000);

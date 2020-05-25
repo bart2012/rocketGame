@@ -1,12 +1,7 @@
 #include "appdelegate.h"
-<<<<<<< HEAD
-#include "gamescene.h"
 #include <AudioEngine.h>
-
-=======
 #include "menuscene.h"
 #include "customizescene.h"
->>>>>>> origin/customize
 // #define USE_AUDIO_ENGINE 1
 
 #if USE_AUDIO_ENGINE
@@ -17,7 +12,7 @@ using namespace cocos2d::experimental;
 USING_NS_CC;
 
 extern const cocos2d::Vec2 sizeScene(1080,1920);
-
+MenuScene *mainMenu;
 AppDelegate::AppDelegate()
 {
 }
@@ -66,13 +61,9 @@ bool AppDelegate::applicationDidFinishLaunching()
 #endif
         director->setOpenGLView(glview);
     }
-<<<<<<< HEAD
     glview->setDesignResolutionSize(sizeScene.x,sizeScene.y,ResolutionPolicy::SHOW_ALL);
 
     // turn on display FPS
-=======
-    glview->setDesignResolutionSize(sizeScene.x,sizeScene.y,ResolutionPolicy::SHOW_ALL);    // turn on display FPS
->>>>>>> origin/customize
     director->setDisplayStats(true);
     // set FPS. the default value is 1.0/60 if you don't call this
     director->setAnimationInterval(1.0f / 60);
@@ -99,10 +90,13 @@ bool AppDelegate::applicationDidFinishLaunching()
     register_all_packages();
 
     // create a scene. it's an autorelease object
-    cocos2d::Scene *scene = MenuScene::createScene();
+    mainMenu = MenuScene::create();
     // run
-    director->runWithScene(scene);
-
+    director->runWithScene(mainMenu);
+    AudioEngine::play2d("Sound/fon.mp3",true);
+    PhysicsShapeCache::getInstance()->addShapesWithFile("physicsBody/rocket.plist");
+    PhysicsShapeCache::getInstance()->addShapesWithFile("physicsBody/b1.plist");
+    PhysicsShapeCache::getInstance()->addShapesWithFile("physicsBody/b2.plist");
     return true;
 }
 

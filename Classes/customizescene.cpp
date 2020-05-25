@@ -1,4 +1,7 @@
 #include "customizescene.h"
+
+extern MenuScene *mainMenu;
+
 CustomizeScene::CustomizeScene()
 {
     _backgroundSprite = cocos2d::Sprite::create("customize/bg.png");
@@ -38,11 +41,9 @@ bool CustomizeScene::init(){
    this->addChild(_rocketPlatform);
    //------------------------------------------------
 
- _rocket = new ArchiWRocket();
-
- _rocket->getSprite()->setPosition(cocos2d::Vec2(1080/2,
-                                         _rocket->getSprite()->getBoundingBox().size.height/2+470));
- this->addChild(_rocket->getSprite());
+ mainMenu->_rocket->getSprite()->setPosition(cocos2d::Vec2(1080/2,
+                                         mainMenu->_rocket->getSprite()->getBoundingBox().size.height/2+470));
+ this->addChild(mainMenu->_rocket->getSprite());
 
 
    //----------------------------------------------
@@ -60,7 +61,7 @@ bool CustomizeScene::init(){
    _bottomBarMenu->addChild(_colors[i]);
   }
   _active= cocos2d::Sprite::create("customize/active.png");
-  _active->setPosition(cocos2d::Point(_active->getBoundingBox().size.width/2+132+_rocket->getColor()*218,
+  _active->setPosition(cocos2d::Point(_active->getBoundingBox().size.width/2+132+mainMenu->_rocket->getColor()*218,
                                       _active->getBoundingBox().size.height/2+32));
   _active->setLocalZOrder(10);
    _bottomBarMenu->addChild(_active);
@@ -81,37 +82,42 @@ bool CustomizeScene::init(){
 }
 
 void CustomizeScene::changeColor(cocos2d::Ref *,int i){
-    this->removeChild(_rocket->getSprite());
-    _rocket = new ArchiWRocket();
-    _rocket->setColor(RocketBase::RocketColor(i));
-    _rocket->getSprite()->setPosition(cocos2d::Vec2(1080/2,
-                                            _rocket->getSprite()->getBoundingBox().size.height/2+470));
-    this->addChild(_rocket->getSprite());
+    this->removeChild(mainMenu->_rocket->getSprite());
+    mainMenu->_rocket->setColor(RocketBase::RocketColor(i));
+    mainMenu->_rocket->getSprite()->setPosition(cocos2d::Vec2(1080/2,
+                                            mainMenu->_rocket->getSprite()->getBoundingBox().size.height/2+470));
+    this->addChild(mainMenu->_rocket->getSprite());
     //----------------------------------------------
     _active->runAction(cocos2d::MoveTo::create(0.1,cocos2d::Point(_active->getBoundingBox().size.width/2+132+i*218,
                                         _active->getBoundingBox().size.height/2+32)));
 
 }
 void CustomizeScene::changeRocket(cocos2d::Ref *, int i){
-    this->removeChild(_rocket->getSprite());
+    this->removeChild(mainMenu->_rocket->getSprite());
     RocketBase *newRocket;
     switch (i) {
-    case 0:newRocket= new ArchiWRocket();break;
-    case 1:newRocket= new BulletRocket();break;
-    case 2:newRocket= new DefenderRocket();break;
+    case 0:newRocket= new ArchiWRocket();
+        newRocket->setType(RocketBase::Type::ArchiW);
+        break;
+    case 1:newRocket= new BulletRocket();
+        newRocket->setType(RocketBase::Type::Defender);
+        break;
+    case 2:newRocket= new DefenderRocket();
+        newRocket->setType(RocketBase::Type::Bullet);
+        break;
     }
-    newRocket->setColor(_rocket->getColor());
-    _rocket=newRocket;
-    _rocket->getSprite()->setPosition(cocos2d::Vec2(1080/2,
-                                                _rocket->getSprite()->getBoundingBox().size.height/2+470));
+    newRocket->setColor(mainMenu->_rocket->getColor());
+    delete mainMenu->_rocket;
+    mainMenu->_rocket=newRocket;
+    mainMenu->_rocket->getSprite()->setPosition(cocos2d::Vec2(1080/2,
+                                                mainMenu->_rocket->getSprite()->getBoundingBox().size.height/2+470));
     _active->runAction(cocos2d::MoveTo::create(0.1,cocos2d::Point(_active->getBoundingBox().size.width/2+132+i*290,
                                         _active->getBoundingBox().size.height/2+32)));
-    this->addChild(_rocket->getSprite());
+    this->addChild(mainMenu->_rocket->getSprite());
 }
 void CustomizeScene::backButtonClicked(cocos2d::Ref *){
     CCLOG("BACk");
-    cocos2d::Scene *scene = MenuScene::createScene();
-    cocos2d::Director::getInstance()->replaceScene(cocos2d::TransitionSlideInL::create(0.6,scene));
+    cocos2d::Director::getInstance()->replaceScene(cocos2d::TransitionSlideInL::create(0.6,(cocos2d::Scene*)mainMenu));
 }
 void CustomizeScene::replaseBottomMenu(cocos2d::Ref*, bool type){
     if(_bottomBarMenuStutusPrevious==type)return;
@@ -152,7 +158,7 @@ void CustomizeScene::replaseBottomMenu(cocos2d::Ref*, bool type){
                     _colors[i]->addClickEventListener(CC_CALLBACK_1(CustomizeScene::changeColor,this,i));
                     _bottomBarMenu->addChild(_colors[i]);
             }
-                    _active->setPosition(cocos2d::Point(_active->getBoundingBox().size.width/2+132+_rocket->getColor()*218,
+                    _active->setPosition(cocos2d::Point(_active->getBoundingBox().size.width/2+132+mainMenu->_rocket->getColor()*218,
                                                         _active->getBoundingBox().size.height/2+32));
 
         }
@@ -160,4 +166,8 @@ void CustomizeScene::replaseBottomMenu(cocos2d::Ref*, bool type){
 
 
 }
-CustomizeScene::~CustomizeScene(){}
+
+CustomizeScene::~CustomizeScene()
+{
+
+}
