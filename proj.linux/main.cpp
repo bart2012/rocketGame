@@ -28,12 +28,17 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <string>
-
+#include <cocos2d.h>
 USING_NS_CC;
 
 int main(int argc, char **argv)
 {
     // create the application instance
+    try {
+
     AppDelegate app;
     return Application::getInstance()->run();
+        } catch (...) {
+           CCLOG("faillllll");
+        }
 }

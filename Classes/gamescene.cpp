@@ -183,7 +183,7 @@ void GameScene::update(float)
 }
 void GameScene::endGame()
 {
-    AudioEngine::play2d("lose.mp3");
+    AudioEngine::play2d("Sound/lose.mp3");
     if (!DoubleCompare::fuzzyIsNull(_player._physicsBody->getVelocity().x, 1)&&_player._rotateTo0Angul->isDone())
     {
         _player.moveEnd();

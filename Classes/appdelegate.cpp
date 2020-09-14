@@ -64,7 +64,7 @@ bool AppDelegate::applicationDidFinishLaunching()
     glview->setDesignResolutionSize(sizeScene.x,sizeScene.y,ResolutionPolicy::SHOW_ALL);
 
     // turn on display FPS
-    director->setDisplayStats(true);
+    //director->setDisplayStats(true);
     // set FPS. the default value is 1.0/60 if you don't call this
     director->setAnimationInterval(1.0f / 60);
     //glview->setFrameSize(1920,1080);
